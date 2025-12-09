@@ -2,10 +2,10 @@ package image;
 
 import java.awt.*;
 import java.awt.image.*;
-import javax.imageio.ImageIO;
 import java.io.*;
-import javax.swing.*;
 import java.util.*;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 /**
  * LICENSE: This is open-source software released under the terms of the<BR>

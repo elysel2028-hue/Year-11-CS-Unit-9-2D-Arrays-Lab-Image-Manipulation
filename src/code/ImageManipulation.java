@@ -7,8 +7,8 @@ public class ImageManipulation {
 
     /** CHALLENGE 0: Display Image */
     public static void main(String[] args) {
-        String fileName = "cyberpunk2077.jpg";
-        APImage image = new APImage("cyberpunk2077.jpg");
+        String fileName = "src/cyberpunk2077.jpg";
+        APImage image = new APImage(fileName);
         image.draw();
         grayScale(fileName);
         blackAndWhite(fileName);
@@ -17,8 +17,6 @@ public class ImageManipulation {
         rotateImage(fileName);
 
     }
-
-    // ONLY ONE getAverageColour method (the correct one)
     private static int getAverageColour(Pixel pixel) {
         return (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3;
     }
@@ -85,7 +83,7 @@ public class ImageManipulation {
                 int diffLeft  = Math.abs(currentAvg - leftAvg);
                 int diffBelow = Math.abs(currentAvg - belowAvg);
                 Pixel outPixel = result.getPixel(x, y);
-                int threshold = 0;
+                int threshold = 30;
 
                 if (diffLeft > threshold || diffBelow > threshold) {
                     outPixel.setRed(0);
@@ -102,40 +100,53 @@ public class ImageManipulation {
     }
 
     /** CHALLENGE FOUR: Reflect Image */
-    public static void reflectImage(String pathToFile) {
+public static void reflectImage(String pathToFile) {
         APImage image = new APImage(pathToFile);
         int width = image.getWidth();
-        for (int y = 0; y < image.getHeight(); y++) {
+        int height = image.getHeight();
+
+        for (int y = 0; y < height; y++) {
             for (int x = 0; x < width / 2; x++) {
                 Pixel left  = image.getPixel(x, y);
                 Pixel right = image.getPixel(width - 1 - x, y);
-                right.setRed(left.getRed());
-                right.setGreen(left.getGreen());
-                right.setBlue(left.getBlue());
+
+                int tempR = left.getRed();
+                int tempG = left.getGreen();
+                int tempB = left.getBlue();
+
+                left.setRed(right.getRed());
+                left.setGreen(right.getGreen());
+                left.setBlue(right.getBlue());
+
+                right.setRed(tempR);
+                right.setGreen(tempG);
+                right.setBlue(tempB);
             }
         }
+
         image.draw();
     }
 
-    /** CHALLENGE FIVE: Rotate Image 90° Clockwise */
-    public static void rotateImage(String pathToFile) {
-        APImage original = new APImage(pathToFile);
-        int oldWidth  = original.getWidth();
-        int oldHeight = original.getHeight();
-        APImage rotated = new APImage(oldHeight, oldWidth);
+    /** CHALLENGE FIVE: Rotate */
+public static void rotateImage(String pathToFile) {
+    APImage original = new APImage(pathToFile);
+    int oldWidth  = original.getWidth();
+    int oldHeight = original.getHeight();
 
-        for (int oldY = 0; oldY < oldHeight; oldY++) {
-            for (int oldX = 0; oldX < oldWidth; oldX++) {
-                Pixel p = original.getPixel(oldX, oldY);
-                int newX = oldY;
-                int newY = oldWidth - 1 - oldX;
+    APImage rotated = new APImage(oldHeight, oldWidth);
 
-                Pixel target = rotated.getPixel(newX, newY);
-                target.setRed(p.getRed());
-                target.setGreen(p.getGreen());
-                target.setBlue(p.getBlue());
-            }
+    for (int oldY = 0; oldY < oldHeight; oldY++) {
+        for (int oldX = 0; oldX < oldWidth; oldX++) {
+            Pixel p = original.getPixel(oldX, oldY);
+            int newX = oldHeight - 1 - oldY;  
+            int newY = oldX;                
+
+            rotated.getPixel(newX, newY).setRed(p.getRed());
+            rotated.getPixel(newX, newY).setGreen(p.getGreen());
+            rotated.getPixel(newX, newY).setBlue(p.getBlue());
         }
-        rotated.draw();
     }
+
+    rotated.draw();
+}
 }

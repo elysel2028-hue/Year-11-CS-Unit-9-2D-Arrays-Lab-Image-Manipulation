@@ -7,8 +7,15 @@ public class ImageManipulation {
 
     /** CHALLENGE 0: Display Image */
     public static void main(String[] args) {
+        String fileName = "cyberpunk2077.jpg";
         APImage image = new APImage("cyberpunk2077.jpg");
         image.draw();
+        grayScale(fileName);
+        blackAndWhite(fileName);
+        edgeDetection(fileName);
+        reflectImage(fileName);
+        rotateImage(fileName);
+
     }
 
     // ONLY ONE getAverageColour method (the correct one)
@@ -56,7 +63,7 @@ public class ImageManipulation {
     }
 
     /** CHALLENGE THREE: Edge Detection */
-    public static void edgeDetection(String pathToFile, int threshold) {
+    public static void edgeDetection(String pathToFile) {
         APImage image = new APImage(pathToFile);
         APImage result = image.clone();
 
@@ -78,6 +85,7 @@ public class ImageManipulation {
                 int diffLeft  = Math.abs(currentAvg - leftAvg);
                 int diffBelow = Math.abs(currentAvg - belowAvg);
                 Pixel outPixel = result.getPixel(x, y);
+                int threshold = 0;
 
                 if (diffLeft > threshold || diffBelow > threshold) {
                     outPixel.setRed(0);
